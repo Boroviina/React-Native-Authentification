@@ -1,11 +1,14 @@
-import { useState } from 'react';
-import { Alert, StyleSheet, View } from 'react-native';
+import {useState} from 'react';
+import {Alert, StyleSheet, View} from 'react-native';
+import {useNavigation} from "@react-navigation/native";
 
 import FlatButton from '../ui/FlatButton';
 import AuthForm from './AuthForm';
-import { Colors } from '../../constants/styles';
+import {Colors} from '../../constants/styles';
 
-function AuthContent({ isLogin, onAuthenticate }) {
+function AuthContent({isLogin, onAuthenticate}) {
+
+    const navigation = useNavigation();
 
     const [credentialsInvalid, setCredentialsInvalid] = useState({
         email: false,
@@ -15,11 +18,15 @@ function AuthContent({ isLogin, onAuthenticate }) {
     });
 
     function switchAuthModeHandler() {
-        // Todo
+        if (isLogin) {
+            navigation.replace('Signup')
+        }else {
+            navigation.replace('Login');
+        }
     }
 
     function submitHandler(credentials) {
-        let { email, confirmEmail, password, confirmPassword } = credentials;
+        let  {email, confirmEmail, password, confirmPassword} = credentials;
 
         email = email.trim();
         password = password.trim();
@@ -43,7 +50,7 @@ function AuthContent({ isLogin, onAuthenticate }) {
             });
             return;
         }
-        onAuthenticate({ email, password });
+        onAuthenticate({email, password});
     }
 
     return (
@@ -73,7 +80,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.primary800,
         elevation: 2,
         shadowColor: 'black',
-        shadowOffset: { width: 1, height: 1 },
+        shadowOffset: {width: 1, height: 1},
         shadowOpacity: 0.35,
         shadowRadius: 4,
     },
